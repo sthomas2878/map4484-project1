@@ -4,7 +4,7 @@ library(ggthemes)
 
 dat <- tibble(Hour = seq(1:168),
               Concentration_High = rep(15,168),
-              Hour_Since_Dose = rep(c(0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3,4,5,6,7),7))
+              Hour_Since_Dose = rep(c(0,1,2,3),42))
 
 doses <- 42
 dose_strength <- 5
@@ -49,7 +49,7 @@ return(final_mat$Total)
 
 
     ######## OPIOIDS ########
-strength_5 <- concentration(doses = 42,
+strength_5 <- concentration(doses = 28,
                             dose_strength = 5,
                             half_life = 4)
 strength_10 <- concentration(doses = 28,
@@ -113,5 +113,60 @@ adult
 
 adult <- adult + geom_line(aes(y = Total_6hrs,
                                color = '400mg every 6 hours')) +
+  scale_color_manual(values = colors)
+adult
+
+
+1, 17
+2, 22.5
+3, 25
+4, 17.5
+5, 15
+6, 12
+
+adult <- ggplot(dat, aes(x = Hour, color = '400mg every 4 hours')) +
+  geom_line(aes(y = Total_4hrs/5)) + 
+  geom_vline(xintercept = c(0, 24, 48, 72, 96, 120, 144, 168),
+             linetype = 2) + 
+  theme_solarized() +
+  xlim(0, 48) + # Number of hours
+  labs(title = 'Concentration of Drug in Body Over Time',
+       y = 'Concentration (mg/L)',
+       color = 'Legend')
+adult
+
+adult <- adult + geom_line(aes(y = Total_6hrs / 5,
+                               color = '400mg every 6 hours')) +
+  scale_color_manual(values = colors)
+
+adult + geom_hline(yintercept = c(10,50))
+
+
+
+    ######COMBO######
+oxy <- concentration(doses = 28, dose_strength = 5,
+                               half_life = 4)
+ibu <- concentration(doses = 28, dose_strength = 400,
+                               half_life = 2)
+dat$oxy <- oxy
+dat$ibu <- ibu
+
+colors = c('5mg Oxycodone every 6 hours' = 'red',
+           '400mg Ibuprofen every 6 hours' = 'dark green')
+
+adult <- ggplot(dat, aes(x = Hour, 
+                  color = '400mg Ibuprofen every 6 hours')) +
+  geom_line(aes(y = ibu)) + 
+  geom_vline(xintercept = c(0, 24, 48, 72, 96, 120, 144, 168),
+             linetype = 2) + 
+  theme_solarized() +
+  xlim(0, 48) + # Number of hours
+  labs(title = 'Quantity of Drug in Body Over Time',
+       y = 'Quantity (mg)',
+       color = 'Legend')
+adult
+
+adult <- adult + geom_line(aes(y = oxy,
+                      color = '5mg Oxycodone every 6 hours')) +
   scale_color_manual(values = colors)
 adult
