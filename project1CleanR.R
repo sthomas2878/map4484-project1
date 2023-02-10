@@ -230,7 +230,7 @@ adult <- ggplot(dat, aes(x = Hour,color = '5mg every 4 hours')) +
   geom_vline(xintercept = c(0, 24, 48, 72, 96, 120, 144, 168),
              linetype = 2) + 
   theme_solarized() +
-  xlim(0, 48) + # Single Day
+  xlim(0, 48) + # Number of Hours
   labs(title = 'Concentration of Oxycodone in Body Over Time',
        y = 'Concentration (ng/mL)',
        color = 'Legend')
